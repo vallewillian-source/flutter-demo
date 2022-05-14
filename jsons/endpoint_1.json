@@ -1,0 +1,28 @@
+{
+    "name": "Send Message",
+    "url": "https://staging.heypink.com/api/v1/chat.sendMessage",
+    "method": "POST",
+    "auth_service": "pinkapp",
+    "in_params": [
+        {
+            "address": "message.rid",
+            "name": "ID da sala",
+            "is_required": true 
+        },
+        {
+            "address": "message.msg",
+            "name": "Mensagem",
+            "is_required": false 
+        }
+    ],
+    "out_params": [
+        {
+            "address": "success",
+            "name": "Sucesso?"
+        },
+        {
+            "address": "message.ts",
+            "name": "Horário"
+        }
+    ]
+}
