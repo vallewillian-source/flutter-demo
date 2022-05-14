@@ -1,34 +1,29 @@
 package io
 
 import (
-	"errors"
 	"fmt"
-	"strconv"
 
 	"github.com/manifoldco/promptui"
-	"github.com/vallewillian-source/go-sofa-data-studio/login"
+	"github.com/vallewillian-source/go-sofa-data-studio/models"
 )
 
-func Request_params(in_params []login.In_params) {
-	validate := func(input string) error {
-		_, err := strconv.ParseFloat(input, 64)
-		if err != nil {
-			return errors.New("invalid number")
+func Request_params(in_params []models.In_params) *[]models.In_params {
+
+	for i, s := range in_params {
+
+		prompt := promptui.Prompt{
+			Label: s.Name,
 		}
-		return nil
+		result, err := prompt.Run()
+
+		if err != nil {
+			fmt.Printf("Prompt failed %v\n", err)
+		} else {
+			in_params[i].Result = result
+		}
+
 	}
 
-	prompt := promptui.Prompt{
-		Label:    "Number",
-		Validate: validate,
-	}
+	return &in_params
 
-	result, err := prompt.Run()
-
-	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
-		return
-	}
-
-	fmt.Printf("You choose %q\n", result)
 }
