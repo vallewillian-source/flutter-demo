@@ -7,10 +7,10 @@ type Bearer_login_service struct {
 }
 
 type Bearer_login_endpoint struct {
-	Url        string                    `json:"url"`
-	Method     string                    `json:"method"`
-	In_params  []In_params               `json:"in_params"`
-	Out_params []Bearer_login_out_params `json:"out_params"`
+	Url        string                  `json:"url"`
+	Method     string                  `json:"method"`
+	In_params  []In_params             `json:"in_params"`
+	Out_params Bearer_login_out_params `json:"out_params"`
 }
 
 type Bearer_login_out_params struct {
