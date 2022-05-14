@@ -26,9 +26,9 @@ func Bearer_login(file string) {
 	json.Unmarshal(byteValue, &login)
 
 	in_parameters := login.Login_endpoint.In_params
-	params := io.Request_params(in_parameters)
+	io.Request_params(&in_parameters)
 
-	for _, s := range *params {
+	for _, s := range in_parameters {
 		fmt.Println(s.Name, s.Result)
 	}
 

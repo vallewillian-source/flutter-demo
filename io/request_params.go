@@ -7,9 +7,9 @@ import (
 	"github.com/vallewillian-source/go-sofa-data-studio/models"
 )
 
-func Request_params(in_params []models.In_params) *[]models.In_params {
+func Request_params(in_params *[]models.In_params) {
 
-	for i, s := range in_params {
+	for i, s := range *in_params {
 
 		prompt := promptui.Prompt{
 			Label: s.Name,
@@ -19,11 +19,9 @@ func Request_params(in_params []models.In_params) *[]models.In_params {
 		if err != nil {
 			fmt.Printf("Prompt failed %v\n", err)
 		} else {
-			in_params[i].Result = result
+			(*in_params)[i].Result = result
 		}
 
 	}
-
-	return &in_params
 
 }
