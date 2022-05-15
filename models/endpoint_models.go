@@ -13,4 +13,5 @@ type Endpoint struct {
 type Out_params struct {
 	Address string `json:"address"`
 	Name    string `json:"name"`
+	Scheema string `json:"scheema"`
 }

@@ -45,6 +45,45 @@ func Execute(file string) {
 
 func show(response string, out_params *[]models.Out_params) {
 	for _, param := range *out_params {
-		fmt.Printf("%s: %s \n", param.Name, gjson.Get(response, param.Address))
+		value := gjson.Get(response, param.Address)
+		if json.Valid([]byte(value.String())) {
+			if len(param.Scheema) > 0 {
+				// print scheema
+				show_scheema(param.Scheema, value.String())
+			} else {
+				// unknown scheema
+				fmt.Printf("\n%s: %s \n", param.Name, value.String())
+			}
+		} else {
+			// print basic value
+			fmt.Printf("\n%s: %s \n", param.Name, value.String())
+		}
+
 	}
+}
+
+//TODO implement array of scheemas
+func show_scheema(scheema_name string, value string) {
+
+	// open json file
+	// TODO implement subfolders for jsons
+	jsonFile, err := os.Open("./jsons/" + scheema_name + ".json")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	defer jsonFile.Close()
+
+	// convert to struct
+	var scheema models.Scheema
+	json.Unmarshal(byteValue, &scheema)
+
+	// printing title
+	fmt.Printf("\n[%s]\n", scheema.Name)
+
+	for _, field := range scheema.Fields {
+		fmt.Printf("%s: %s\n", field.Name, gjson.Get(value, field.Address))
+	}
+
 }
