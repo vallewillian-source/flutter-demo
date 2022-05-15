@@ -67,6 +67,7 @@ func show_scheema(scheema_name string, value string) {
 
 	// open json file
 	// TODO implement subfolders for jsons
+	// TODO implement cache
 	jsonFile, err := os.Open("./jsons/" + scheema_name + ".json")
 	if err != nil {
 		fmt.Println(err)
@@ -80,10 +81,26 @@ func show_scheema(scheema_name string, value string) {
 	json.Unmarshal(byteValue, &scheema)
 
 	// printing title
-	fmt.Printf("\n[%s]\n", scheema.Name)
+	fmt.Printf("\n\n[%s]", scheema.Name)
 
+	// printing fields
 	for _, field := range scheema.Fields {
-		fmt.Printf("%s: %s\n", field.Name, gjson.Get(value, field.Address))
+
+		field_value := gjson.Get(value, field.Address)
+		if json.Valid([]byte(field_value.String())) {
+			if len(field.Scheema) > 0 {
+				// print scheema
+				show_scheema(field.Scheema, field_value.String())
+			} else {
+				// unknown scheema
+				fmt.Printf("\n%s: %s", field.Name, field_value.String())
+			}
+		} else {
+			// print basic value
+			fmt.Printf("\n%s: %s", field.Name, field_value.String())
+		}
+
 	}
+	fmt.Printf("\n")
 
 }
