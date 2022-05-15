@@ -21,7 +21,6 @@ func Bearer_login(file string) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println("\n..Successfully opened " + file)
 
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	defer jsonFile.Close()
@@ -35,7 +34,7 @@ func Bearer_login(file string) {
 	io.Request_params(&in_parameters)
 
 	// make a http request
-	response_body, err := helpers.Request(login.Login_endpoint.Url, login.Login_endpoint.Method, &in_parameters)
+	response_body, err := helpers.Request(login.Service_name, login.Login_endpoint.Url, login.Login_endpoint.Method, &in_parameters)
 	if err != nil {
 		fmt.Println(err)
 	}

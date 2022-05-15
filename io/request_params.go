@@ -11,15 +11,17 @@ func Request_params(in_params *[]models.In_params) {
 
 	for i, s := range *in_params {
 
-		prompt := promptui.Prompt{
-			Label: s.Name,
-		}
-		result, err := prompt.Run()
+		if s.Type != "header" {
+			prompt := promptui.Prompt{
+				Label: s.Name,
+			}
+			result, err := prompt.Run()
 
-		if err != nil {
-			fmt.Printf("Prompt failed %v\n", err)
-		} else {
-			(*in_params)[i].Result = result
+			if err != nil {
+				fmt.Printf("Prompt failed %v\n", err)
+			} else {
+				(*in_params)[i].Result = result
+			}
 		}
 
 	}

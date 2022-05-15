@@ -17,3 +17,8 @@ type Bearer_login_out_params struct {
 	Auth_token   string `json:"auth_token"`
 	Auth_user_id string `json:"auth_user_id"`
 }
+
+type Bearer_login_file struct {
+	Auth_token   string `json:"auth_token"`
+	Auth_user_id string `json:"auth_user_id"`
+}

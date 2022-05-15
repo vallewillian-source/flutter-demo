@@ -5,4 +5,5 @@ type In_params struct {
 	Name        string `json:"name"`
 	Is_required bool   `json:"is_required"`
 	Result      string
+	Type        string `json:"type"`
 }
