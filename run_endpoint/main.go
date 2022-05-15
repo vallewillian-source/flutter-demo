@@ -33,7 +33,7 @@ func Execute(file string) {
 	io.Request_params(&in_parameters)
 
 	// make a http request
-	response_body, err := helpers.Request(endpoint.Auth_service, endpoint.Url, endpoint.Method, &in_parameters)
+	response_body, err := helpers.Request(endpoint.Auth_service, endpoint.Url, endpoint.Method, endpoint.Auth_type, &in_parameters)
 	if err != nil {
 		fmt.Println(err)
 	}

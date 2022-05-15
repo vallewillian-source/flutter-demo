@@ -6,4 +6,5 @@ type In_params struct {
 	Is_required bool   `json:"is_required"`
 	Result      string
 	Type        string `json:"type"`
+	Auth        string `json:"auth"`
 }

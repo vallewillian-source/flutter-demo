@@ -10,8 +10,8 @@ import (
 func Request_params(in_params *[]models.In_params) {
 
 	for i, s := range *in_params {
-
-		if s.Type != "header" {
+		// TODO implement post and querystring
+		if s.Type == "body" {
 			prompt := promptui.Prompt{
 				Label: s.Name,
 			}

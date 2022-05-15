@@ -14,15 +14,17 @@ import (
 	"github.com/vallewillian-source/go-sofa-data-studio/models"
 )
 
-func Request(service_name string, url string, method string, in_params *[]models.In_params) (string, error) {
+func Request(service_name string, url string, method string, auth_type string, in_params *[]models.In_params) (string, error) {
+
+	//TODO implement GET, PUT, DELETE
 	if method == "POST" {
-		return post(service_name, url, in_params)
+		return post(service_name, url, auth_type, in_params)
 	}
 
 	return "", errors.New("METHOD_UNKNOWN")
 }
 
-func post(service_name string, url string, in_params *[]models.In_params) (string, error) {
+func post(service_name string, url string, auth_type string, in_params *[]models.In_params) (string, error) {
 
 	// creating body data
 	body, err := convert_to_body(in_params)
@@ -39,7 +41,12 @@ func post(service_name string, url string, in_params *[]models.In_params) (strin
 	}
 
 	// getting auth data
-	get_auth(service_name, in_params)
+	if auth_type == "BEARER_TOKEN" {
+		get_bearer_auth(service_name, in_params)
+	} else if auth_type == "NONE" {
+	} else {
+		return "", errors.New("AUTH_TYPE_INVALID")
+	}
 
 	// adding params to header
 	add_to_header(req, in_params)
@@ -60,7 +67,7 @@ func post(service_name string, url string, in_params *[]models.In_params) (strin
 	return string(response_body), nil
 }
 
-func get_auth(service_name string, in_params *[]models.In_params) {
+func get_bearer_auth(service_name string, in_params *[]models.In_params) {
 
 	// open json file
 	jsonFile, err := os.Open("./jsons/auth/" + service_name + ".json")
@@ -76,10 +83,9 @@ func get_auth(service_name string, in_params *[]models.In_params) {
 	json.Unmarshal(byteValue, &auth)
 
 	for i, s := range *in_params {
-		// TODO review standart for a less arbitraty 'in_params' relation
-		if s.Address == "X-Auth-Token" {
+		if s.Auth == "auth_token" {
 			(*in_params)[i].Result = auth.Auth_token
-		} else if s.Address == "X-User-Id" {
+		} else if s.Auth == "auth_user_id" {
 			(*in_params)[i].Result = auth.Auth_user_id
 		}
 	}

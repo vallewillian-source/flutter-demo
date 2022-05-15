@@ -34,7 +34,7 @@ func Bearer_login(file string) {
 	io.Request_params(&in_parameters)
 
 	// make a http request
-	response_body, err := helpers.Request(login.Service_name, login.Login_endpoint.Url, login.Login_endpoint.Method, &in_parameters)
+	response_body, err := helpers.Request(login.Service_name, login.Login_endpoint.Url, login.Login_endpoint.Method, "NONE", &in_parameters)
 	if err != nil {
 		fmt.Println(err)
 	}
