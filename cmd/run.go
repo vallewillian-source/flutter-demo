@@ -1,4 +1,4 @@
-package run_endpoint
+package cmd
 
 import (
 	"encoding/json"
@@ -6,13 +6,14 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/vallewillian-source/go-sofa-data-studio/internal/io"
+
 	"github.com/tidwall/gjson"
-	"github.com/vallewillian-source/go-sofa-data-studio/helpers"
-	"github.com/vallewillian-source/go-sofa-data-studio/io"
+	"github.com/vallewillian-source/go-sofa-data-studio/internal/rest"
 	"github.com/vallewillian-source/go-sofa-data-studio/models"
 )
 
-func Execute(file string) {
+func Run(file string) {
 	print("\nrun_endpoint()")
 
 	// open json file
@@ -30,10 +31,10 @@ func Execute(file string) {
 
 	// request params from user
 	in_parameters := endpoint.In_params
-	io.Request_params(&in_parameters)
+	io.RequestParams(&in_parameters)
 
 	// make a http request
-	response_body, err := helpers.Request(endpoint.Auth_service, endpoint.Url, endpoint.Method, endpoint.Auth_type, &in_parameters)
+	response_body, err := rest.Request(endpoint.Auth_service, endpoint.Url, endpoint.Method, endpoint.Auth_type, &in_parameters)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -66,7 +67,6 @@ func show(response string, out_params *[]models.Out_params) {
 func show_scheema(scheema_name string, value string) {
 
 	// open json file
-	// TODO implement subfolders for jsons
 	// TODO implement cache
 	jsonFile, err := os.Open("./jsons/" + scheema_name + ".json")
 	if err != nil {

@@ -1,4 +1,4 @@
-package login
+package auth
 
 import (
 	"encoding/json"
@@ -8,12 +8,12 @@ import (
 
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
-	"github.com/vallewillian-source/go-sofa-data-studio/helpers"
-	"github.com/vallewillian-source/go-sofa-data-studio/io"
+	"github.com/vallewillian-source/go-sofa-data-studio/internal/io"
+	"github.com/vallewillian-source/go-sofa-data-studio/internal/rest"
 	"github.com/vallewillian-source/go-sofa-data-studio/models"
 )
 
-func Bearer_login(file string) {
+func BearerLogin(file string) {
 	print("\nlogin_bearer()")
 
 	// open json file
@@ -31,10 +31,10 @@ func Bearer_login(file string) {
 
 	// request params from user
 	in_parameters := login.Login_endpoint.In_params
-	io.Request_params(&in_parameters)
+	io.RequestParams(&in_parameters)
 
 	// make a http request
-	response_body, err := helpers.Request(login.Service_name, login.Login_endpoint.Url, login.Login_endpoint.Method, "NONE", &in_parameters)
+	response_body, err := rest.Request(login.Service_name, login.Login_endpoint.Url, login.Login_endpoint.Method, "NONE", &in_parameters)
 	if err != nil {
 		fmt.Println(err)
 	}
