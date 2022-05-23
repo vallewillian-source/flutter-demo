@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/vallewillian-source/go-sofa-data-studio/internal/auth"
 	"github.com/vallewillian-source/go-sofa-data-studio/internal/io"
@@ -17,7 +18,7 @@ import (
 func Run(serviceName string, endpointName string) error {
 
 	// open api json file
-	apiJsonFile, err := os.Open("./jsons/services/" + serviceName + "/auth.json")
+	apiJsonFile, err := os.Open("./jsons/services/" + serviceName + "/api.json")
 	if err != nil {
 		return err
 	}
@@ -58,28 +59,46 @@ func Run(serviceName string, endpointName string) error {
 		return err
 	}
 
-	// display result
-	show(responseBody, &endpoint.OutParams)
+	// generate result
+	result, err := generateResult(serviceName, responseBody, &endpoint.OutParams)
+	if err != nil {
+		return err
+	}
+
+	resultJson, err := json.Marshal(result)
+	if err != nil {
+		return err
+	}
+
+	os.WriteFile("jsons/results/"+serviceName+"_"+endpointName+"_"+strconv.Itoa(int(time.Now().Unix()))+".json", []byte(resultJson), 0644)
 
 	return nil
 
 }
 
-func show(response string, outParams *[]rest.OutParams) {
+func generateResult(serviceName string, response string, outParams *[]rest.OutParams) (map[string]interface{}, error) {
+	var result map[string]interface{} = make(map[string]interface{})
+
 	for _, param := range *outParams {
 		value := gjson.Get(response, param.Address)
 		if json.Valid([]byte(value.String())) {
 			if len(param.Scheema) > 0 {
 				// print scheema
-				scheema.ShowScheema(param.Scheema, value.String())
+				var err error
+				result[param.Name], err = scheema.GenerateScheema(serviceName, param.Scheema, value.String())
+				if err != nil {
+					result[param.Name] = "Err"
+				}
 			} else {
 				// unknown scheema
-				fmt.Printf("\n%s: %s \n", param.Name, value.String())
+				result[param.Name] = value.String()
 			}
 		} else {
 			// print basic value
-			fmt.Printf("\n%s: %s \n", param.Name, value.String())
+			result[param.Name] = value.String()
 		}
 
 	}
+
+	return result, nil
 }

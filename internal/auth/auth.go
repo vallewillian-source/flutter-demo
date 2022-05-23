@@ -10,7 +10,7 @@ func Login(serviceName string, authType string) error {
 	if authType == "BEARER_TOKEN" {
 		bearerLogin(serviceName)
 	} else {
-		return errors.New("AUTH_TYPE_INVALID")
+		return errors.New("LOGIN_AUTH_TYPE_INVALID")
 	}
 
 	return nil
@@ -20,7 +20,7 @@ func FetchAuthParameters(serviceName string, authType string, inParams *[]rest.I
 	if authType == "BEARER_TOKEN" {
 		bearerFetchAuthParameters(serviceName, inParams)
 	} else {
-		return errors.New("AUTH_TYPE_INVALID")
+		return errors.New("FETCH_AUTH_TYPE_INVALID")
 	}
 
 	return nil

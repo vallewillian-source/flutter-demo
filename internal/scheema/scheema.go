@@ -13,6 +13,7 @@ type Scheema struct {
 	Name       string          `json:"name"`
 	PrimaryKey string          `json:"primary_key"`
 	Fields     []ScheemaFields `json:"fields"`
+	Result     map[string]interface{}
 }
 
 type ScheemaFields struct {
@@ -22,11 +23,11 @@ type ScheemaFields struct {
 }
 
 //TODO implement array of scheemas
-func ShowScheema(scheemaName string, value string) {
+func GenerateScheema(serviceName string, scheemaName string, value string) (Scheema, error) {
 
 	// open json file
 	// TODO implement cache
-	jsonFile, err := os.Open("./jsons/" + scheemaName + ".json")
+	jsonFile, err := os.Open("./jsons/services/" + serviceName + "/scheemas/" + scheemaName + ".json")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -38,27 +39,32 @@ func ShowScheema(scheemaName string, value string) {
 	var scheema Scheema
 	json.Unmarshal(byteValue, &scheema)
 
-	// printing title
-	fmt.Printf("\n\n[%s]", scheema.Name)
+	// initializing scheema result
+	scheema.Result = make(map[string]interface{})
 
-	// printing fields
+	// getting fields
 	for _, field := range scheema.Fields {
 
 		fieldValue := gjson.Get(value, field.Address)
 		if json.Valid([]byte(fieldValue.String())) {
 			if len(field.Scheema) > 0 {
-				// print scheema
-				ShowScheema(field.Scheema, fieldValue.String())
+				// insert scheema
+				var err error
+				scheema.Result[field.Name], err = GenerateScheema(serviceName, field.Scheema, fieldValue.String())
+				if err != nil {
+					scheema.Result[field.Name] = "Err"
+				}
 			} else {
 				// unknown scheema
-				fmt.Printf("\n%s: %s", field.Name, fieldValue.String())
+				scheema.Result[field.Name] = fieldValue.String()
 			}
 		} else {
-			// print basic value
-			fmt.Printf("\n%s: %s", field.Name, fieldValue.String())
+			// insert basic value
+			scheema.Result[field.Name] = fieldValue.String()
 		}
 
 	}
-	fmt.Printf("\n")
+
+	return scheema, nil
 
 }

@@ -15,6 +15,9 @@ func Execute() {
 	if args[0] == "login" {
 		Login(args[1])
 	} else if args[0] == "run" {
-		Run(args[1], args[2])
+		err := Run(args[1], args[2])
+		if err != nil {
+			panic(err)
+		}
 	}
 }
