@@ -7,7 +7,7 @@ import (
 	"github.com/vallewillian-source/go-sofa-data-studio/models"
 )
 
-func RequestParams(in_params *[]models.In_params) {
+func FetchParams(in_params *[]models.InParams) {
 
 	for i, s := range *in_params {
 		// TODO implement post and querystring

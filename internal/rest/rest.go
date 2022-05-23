@@ -14,42 +14,42 @@ import (
 	"github.com/vallewillian-source/go-sofa-data-studio/models"
 )
 
-func Request(service_name string, url string, method string, auth_type string, in_params *[]models.In_params) (string, error) {
+func Request(serviceName string, url string, method string, authType string, inParams *[]models.InParams) (string, error) {
 
 	//TODO implement GET, PUT, DELETE
 	if method == "POST" {
-		return post(service_name, url, auth_type, in_params)
+		return post(serviceName, url, authType, inParams)
 	}
 
 	return "", errors.New("METHOD_UNKNOWN")
 }
 
-func post(service_name string, url string, auth_type string, in_params *[]models.In_params) (string, error) {
+func post(serviceName string, url string, authType string, inParams *[]models.InParams) (string, error) {
 
 	// creating body data
-	body, err := convert_to_body(in_params)
+	body, err := convertToBody(inParams)
 	if err != nil {
 		return "", err
 	}
-	responseBody := bytes.NewBuffer([]byte(body))
+	requestBody := bytes.NewBuffer([]byte(body))
 
 	// preparing a http request
 	client := &http.Client{}
-	req, err := http.NewRequest("POST", url, responseBody)
+	req, err := http.NewRequest("POST", url, requestBody)
 	if err != nil {
 		return "", err
 	}
 
 	// getting auth data
-	if auth_type == "BEARER_TOKEN" {
-		get_bearer_auth(service_name, in_params)
-	} else if auth_type == "NONE" {
+	if authType == "BEARER_TOKEN" {
+		getBearerAuth(serviceName, inParams)
+	} else if authType == "NONE" {
 	} else {
 		return "", errors.New("AUTH_TYPE_INVALID")
 	}
 
 	// adding params to header
-	add_to_header(req, in_params)
+	addToHeader(req, inParams)
 
 	// execute a http request
 	resp, err := client.Do(req)
@@ -59,18 +59,18 @@ func post(service_name string, url string, auth_type string, in_params *[]models
 	defer resp.Body.Close()
 
 	// read the response body
-	response_body, err := ioutil.ReadAll(resp.Body)
+	responseBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	return string(response_body), nil
+	return string(responseBody), nil
 }
 
-func get_bearer_auth(service_name string, in_params *[]models.In_params) {
+func getBearerAuth(serviceName string, inParams *[]models.InParams) {
 
 	// open json file
-	jsonFile, err := os.Open("./jsons/auth/" + service_name + ".json")
+	jsonFile, err := os.Open("./jsons/auth/" + serviceName + ".json")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -79,23 +79,23 @@ func get_bearer_auth(service_name string, in_params *[]models.In_params) {
 	defer jsonFile.Close()
 
 	// convert to struct
-	var auth models.Bearer_login_file
+	var auth models.BearerLoginFile
 	json.Unmarshal(byteValue, &auth)
 
-	for i, s := range *in_params {
+	for i, s := range *inParams {
 		if s.Auth == "auth_token" {
-			(*in_params)[i].Result = auth.Auth_token
+			(*inParams)[i].Result = auth.AuthToken
 		} else if s.Auth == "auth_user_id" {
-			(*in_params)[i].Result = auth.Auth_user_id
+			(*inParams)[i].Result = auth.AuthUserId
 		}
 	}
 
 }
 
-func convert_to_body(in_params *[]models.In_params) (string, error) {
+func convertToBody(inParams *[]models.InParams) (string, error) {
 
 	body := "{}"
-	for _, s := range *in_params {
+	for _, s := range *inParams {
 		if s.Type == "body" {
 			body, _ = sjson.Set(body, s.Address, s.Result)
 		}
@@ -104,9 +104,9 @@ func convert_to_body(in_params *[]models.In_params) (string, error) {
 	return body, nil
 }
 
-func add_to_header(req *http.Request, in_params *[]models.In_params) error {
+func addToHeader(req *http.Request, inParams *[]models.InParams) error {
 
-	for _, s := range *in_params {
+	for _, s := range *inParams {
 		if s.Type == "header" {
 			req.Header.Set(s.Address, s.Result)
 		}

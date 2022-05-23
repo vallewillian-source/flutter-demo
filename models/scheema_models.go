@@ -1,12 +1,12 @@
 package models
 
 type Scheema struct {
-	Name        string           `json:"name"`
-	Primary_key string           `json:"primary_key"`
-	Fields      []Scheema_fields `json:"fields"`
+	Name       string          `json:"name"`
+	PrimaryKey string          `json:"primary_key"`
+	Fields     []ScheemaFields `json:"fields"`
 }
 
-type Scheema_fields struct {
+type ScheemaFields struct {
 	Name    string `json:"name"`
 	Scheema string `json:"scheema"`
 	Address string `json:"address"`

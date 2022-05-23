@@ -26,27 +26,27 @@ func BearerLogin(file string) {
 	defer jsonFile.Close()
 
 	// convert to struct
-	var login models.Bearer_login_service
+	var login models.BearerLoginService
 	json.Unmarshal(byteValue, &login)
 
 	// request params from user
-	in_parameters := login.Login_endpoint.In_params
-	io.RequestParams(&in_parameters)
+	inParameters := login.LoginEndpoint.InParams
+	io.FetchParams(&inParameters)
 
 	// make a http request
-	response_body, err := rest.Request(login.Service_name, login.Login_endpoint.Url, login.Login_endpoint.Method, "NONE", &in_parameters)
+	responseBody, err := rest.Request(login.ServiceName, login.LoginEndpoint.Url, login.LoginEndpoint.Method, "NONE", &inParameters)
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	// getting token and user id
-	auth_token := gjson.Get(response_body, login.Login_endpoint.Out_params.Auth_token)
-	auth_user_id := gjson.Get(response_body, login.Login_endpoint.Out_params.Auth_user_id)
+	authToken := gjson.Get(responseBody, login.LoginEndpoint.OutParams.AuthToken)
+	authUserId := gjson.Get(responseBody, login.LoginEndpoint.OutParams.AuthUserId)
 
 	// saving auth data to file
-	tokens, _ := sjson.Set("{}", "auth_token", auth_token.String())
-	tokens, _ = sjson.Set(tokens, "auth_user_id", auth_user_id.String())
+	tokens, _ := sjson.Set("{}", "auth_token", authToken.String())
+	tokens, _ = sjson.Set(tokens, "auth_user_id", authUserId.String())
 
-	os.WriteFile("jsons/auth/"+login.Service_name+".json", []byte(tokens), 0644)
+	os.WriteFile("jsons/auth/"+login.ServiceName+".json", []byte(tokens), 0644)
 
 }

@@ -30,27 +30,27 @@ func Run(file string) {
 	json.Unmarshal(byteValue, &endpoint)
 
 	// request params from user
-	in_parameters := endpoint.In_params
-	io.RequestParams(&in_parameters)
+	inParameters := endpoint.InParams
+	io.FetchParams(&inParameters)
 
 	// make a http request
-	response_body, err := rest.Request(endpoint.Auth_service, endpoint.Url, endpoint.Method, endpoint.Auth_type, &in_parameters)
+	responseBody, err := rest.Request(endpoint.AuthService, endpoint.Url, endpoint.Method, endpoint.AuthType, &inParameters)
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	// display result
-	show(response_body, &endpoint.Out_params)
+	show(responseBody, &endpoint.OutParams)
 
 }
 
-func show(response string, out_params *[]models.Out_params) {
-	for _, param := range *out_params {
+func show(response string, outParams *[]models.OutParams) {
+	for _, param := range *outParams {
 		value := gjson.Get(response, param.Address)
 		if json.Valid([]byte(value.String())) {
 			if len(param.Scheema) > 0 {
 				// print scheema
-				show_scheema(param.Scheema, value.String())
+				showScheema(param.Scheema, value.String())
 			} else {
 				// unknown scheema
 				fmt.Printf("\n%s: %s \n", param.Name, value.String())
@@ -64,11 +64,11 @@ func show(response string, out_params *[]models.Out_params) {
 }
 
 //TODO implement array of scheemas
-func show_scheema(scheema_name string, value string) {
+func showScheema(scheemaName string, value string) {
 
 	// open json file
 	// TODO implement cache
-	jsonFile, err := os.Open("./jsons/" + scheema_name + ".json")
+	jsonFile, err := os.Open("./jsons/" + scheemaName + ".json")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -86,18 +86,18 @@ func show_scheema(scheema_name string, value string) {
 	// printing fields
 	for _, field := range scheema.Fields {
 
-		field_value := gjson.Get(value, field.Address)
-		if json.Valid([]byte(field_value.String())) {
+		fieldValue := gjson.Get(value, field.Address)
+		if json.Valid([]byte(fieldValue.String())) {
 			if len(field.Scheema) > 0 {
 				// print scheema
-				show_scheema(field.Scheema, field_value.String())
+				showScheema(field.Scheema, fieldValue.String())
 			} else {
 				// unknown scheema
-				fmt.Printf("\n%s: %s", field.Name, field_value.String())
+				fmt.Printf("\n%s: %s", field.Name, fieldValue.String())
 			}
 		} else {
 			// print basic value
-			fmt.Printf("\n%s: %s", field.Name, field_value.String())
+			fmt.Printf("\n%s: %s", field.Name, fieldValue.String())
 		}
 
 	}
