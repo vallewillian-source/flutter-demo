@@ -11,7 +11,7 @@ import (
 func Login(serviceName string) error {
 
 	// open json file
-	jsonFile, err := os.Open("./jsons/services/" + serviceName + "/auth.json")
+	jsonFile, err := os.Open("./jsons/services/" + serviceName + "/api.json")
 	if err != nil {
 		return err
 	}

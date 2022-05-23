@@ -12,6 +12,29 @@ import (
 	"github.com/vallewillian-source/go-sofa-data-studio/internal/rest"
 )
 
+type bearerLoginService struct {
+	ServiceName   string              `json:"service_name"`
+	AuthType      string              `json:"auth_type"`
+	LoginEndpoint bearerLoginEndpoint `json:"login_endpoint"`
+}
+
+type bearerLoginEndpoint struct {
+	Url       string               `json:"url"`
+	Method    string               `json:"method"`
+	InParams  []rest.InParams      `json:"in_params"`
+	OutParams bearerLoginOutParams `json:"out_params"`
+}
+
+type bearerLoginOutParams struct {
+	AuthToken  string `json:"auth_token"`
+	AuthUserId string `json:"auth_user_id"`
+}
+
+type bearerLoginFile struct {
+	AuthToken  string `json:"auth_token"`
+	AuthUserId string `json:"auth_user_id"`
+}
+
 func bearerLogin(serviceName string) {
 
 	// open json file
