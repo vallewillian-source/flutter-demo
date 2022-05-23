@@ -30,7 +30,7 @@ func GenerateScheema(serviceName string, scheemaName string, value string, cache
 	scheema, ok := (*cache)[scheemaName]
 	if !ok {
 		// not found on cache. getting from file..
-		jsonFile, err := os.Open("./jsons/services/" + serviceName + "/scheemas/" + scheemaName + ".json")
+		jsonFile, err := os.Open("./lib/jsons/services/" + serviceName + "/scheemas/" + scheemaName + ".json")
 		if err != nil {
 			fmt.Println(err)
 		}

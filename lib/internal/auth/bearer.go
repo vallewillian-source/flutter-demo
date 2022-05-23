@@ -8,8 +8,8 @@ import (
 
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
-	"github.com/vallewillian-source/sofa-lab/internal/io"
-	"github.com/vallewillian-source/sofa-lab/internal/rest"
+	"github.com/vallewillian-source/sofa-lab/lib/internal/io"
+	"github.com/vallewillian-source/sofa-lab/lib/internal/rest"
 )
 
 type bearerLoginService struct {
@@ -38,7 +38,7 @@ type bearerLoginFile struct {
 func bearerLogin(serviceName string) {
 
 	// open json file
-	jsonFile, err := os.Open("./jsons/services/" + serviceName + "/auth.json")
+	jsonFile, err := os.Open("./lib/jsons/services/" + serviceName + "/auth.json")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -75,7 +75,7 @@ func bearerLogin(serviceName string) {
 func bearerFetchAuthParameters(serviceName string, inParams *[]rest.InParams) {
 
 	// open json file
-	jsonFile, err := os.Open("./jsons/auth/" + serviceName + ".json")
+	jsonFile, err := os.Open("./lib/jsons/auth/" + serviceName + ".json")
 	if err != nil {
 		fmt.Println(err)
 	}

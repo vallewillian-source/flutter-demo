@@ -7,18 +7,18 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/vallewillian-source/sofa-lab/internal/auth"
-	"github.com/vallewillian-source/sofa-lab/internal/io"
-	"github.com/vallewillian-source/sofa-lab/internal/scheema"
+	"github.com/vallewillian-source/sofa-lab/lib/internal/auth"
+	"github.com/vallewillian-source/sofa-lab/lib/internal/io"
+	"github.com/vallewillian-source/sofa-lab/lib/internal/scheema"
 
 	"github.com/tidwall/gjson"
-	"github.com/vallewillian-source/sofa-lab/internal/rest"
+	"github.com/vallewillian-source/sofa-lab/lib/internal/rest"
 )
 
 func Run(serviceName string, endpointName string) (map[string]interface{}, error) {
 
 	// open api json file
-	apiJsonFile, err := os.Open("./jsons/services/" + serviceName + "/api.json")
+	apiJsonFile, err := os.Open("./lib/jsons/services/" + serviceName + "/api.json")
 	if err != nil {
 		panic(err)
 	}
@@ -31,7 +31,7 @@ func Run(serviceName string, endpointName string) (map[string]interface{}, error
 	json.Unmarshal(apiByteValue, &api)
 
 	// open endpoint json file
-	jsonFile, err := os.Open("./jsons/services/" + serviceName + "/endpoints/" + endpointName + ".json")
+	jsonFile, err := os.Open("./lib/jsons/services/" + serviceName + "/endpoints/" + endpointName + ".json")
 	if err != nil {
 		panic(err)
 	}
