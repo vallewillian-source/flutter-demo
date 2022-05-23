@@ -15,12 +15,12 @@ import (
 	"github.com/vallewillian-source/go-sofa-data-studio/internal/rest"
 )
 
-func Run(serviceName string, endpointName string) error {
+func Run(serviceName string, endpointName string) (map[string]interface{}, error) {
 
 	// open api json file
 	apiJsonFile, err := os.Open("./jsons/services/" + serviceName + "/api.json")
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	apiByteValue, _ := ioutil.ReadAll(apiJsonFile)
@@ -33,7 +33,7 @@ func Run(serviceName string, endpointName string) error {
 	// open endpoint json file
 	jsonFile, err := os.Open("./jsons/services/" + serviceName + "/endpoints/" + endpointName + ".json")
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	byteValue, _ := ioutil.ReadAll(jsonFile)
@@ -50,29 +50,22 @@ func Run(serviceName string, endpointName string) error {
 	// getting auth data
 	err = auth.FetchAuthParameters(endpoint.AuthService, api.AuthType, &inParameters)
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	// make a http request
 	responseBody, err := rest.Request(endpoint.AuthService, endpoint.Url, endpoint.Method, &inParameters)
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	// generate result
 	result, err := generateResult(serviceName, responseBody, &endpoint.OutParams)
 	if err != nil {
-		return err
+		panic(err)
 	}
 
-	resultJson, err := json.Marshal(result)
-	if err != nil {
-		return err
-	}
-
-	os.WriteFile("jsons/results/"+serviceName+"_"+endpointName+"_"+strconv.Itoa(int(time.Now().Unix()))+".json", []byte(resultJson), 0644)
-
-	return nil
+	return result, nil
 
 }
 
@@ -101,4 +94,16 @@ func generateResult(serviceName string, response string, outParams *[]rest.OutPa
 	}
 
 	return result, nil
+}
+
+// TODO encapsulate a export system
+func exportToJson(serviceName string, endpointName string, result map[string]interface{}) error {
+	resultJson, err := json.Marshal(result)
+	if err != nil {
+		return err
+	}
+
+	os.WriteFile("jsons/results/"+serviceName+"_"+endpointName+"_"+strconv.Itoa(int(time.Now().Unix()))+".json", []byte(resultJson), 0644)
+
+	return nil
 }
