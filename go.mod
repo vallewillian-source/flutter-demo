@@ -1,4 +1,4 @@
-module github.com/vallewillian-source/go-sofa-data-studio
+module github.com/vallewillian-source/sofa-lab
 
 go 1.18
 

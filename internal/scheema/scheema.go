@@ -41,7 +41,7 @@ func GenerateScheema(serviceName string, scheemaName string, value string, cache
 		// convert to struct
 		json.Unmarshal(byteValue, &scheema)
 
-		// saving to cache
+		// saving on cache
 		(*cache)[scheemaName] = scheema
 
 	}

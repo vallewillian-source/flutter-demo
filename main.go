@@ -1,6 +1,6 @@
 package main
 
-import "github.com/vallewillian-source/go-sofa-data-studio/cmd"
+import "github.com/vallewillian-source/sofa-lab/cmd"
 
 func main() {
 	cmd.Execute()

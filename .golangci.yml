@@ -9,7 +9,7 @@ linters-settings:
   depguard:
     list-type: whitelist
     packages:
-      - github.com/vallewillian-source/go-sofa-data-studio
+      - github.com/vallewillian-source/sofa-lab
       - github.com/stretchr/testify/assert
   misspell:
     locale: US

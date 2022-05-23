@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/manifoldco/promptui"
-	"github.com/vallewillian-source/go-sofa-data-studio/internal/rest"
+	"github.com/vallewillian-source/sofa-lab/internal/rest"
 )
 
 func FetchParams(in_params *[]rest.InParams) {

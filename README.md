@@ -1,1 +1,1 @@
-# go-sofa-data-studio
+# sofa-lab

@@ -7,12 +7,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/vallewillian-source/go-sofa-data-studio/internal/auth"
-	"github.com/vallewillian-source/go-sofa-data-studio/internal/io"
-	"github.com/vallewillian-source/go-sofa-data-studio/internal/scheema"
+	"github.com/vallewillian-source/sofa-lab/internal/auth"
+	"github.com/vallewillian-source/sofa-lab/internal/io"
+	"github.com/vallewillian-source/sofa-lab/internal/scheema"
 
 	"github.com/tidwall/gjson"
-	"github.com/vallewillian-source/go-sofa-data-studio/internal/rest"
+	"github.com/vallewillian-source/sofa-lab/internal/rest"
 )
 
 func Run(serviceName string, endpointName string) (map[string]interface{}, error) {

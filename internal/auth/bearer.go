@@ -8,8 +8,8 @@ import (
 
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
-	"github.com/vallewillian-source/go-sofa-data-studio/internal/io"
-	"github.com/vallewillian-source/go-sofa-data-studio/internal/rest"
+	"github.com/vallewillian-source/sofa-lab/internal/io"
+	"github.com/vallewillian-source/sofa-lab/internal/rest"
 )
 
 type bearerLoginService struct {

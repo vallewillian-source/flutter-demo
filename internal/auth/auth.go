@@ -3,7 +3,7 @@ package auth
 import (
 	"errors"
 
-	"github.com/vallewillian-source/go-sofa-data-studio/internal/rest"
+	"github.com/vallewillian-source/sofa-lab/internal/rest"
 )
 
 func Login(serviceName string, authType string) error {

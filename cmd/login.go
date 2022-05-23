@@ -5,12 +5,12 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/vallewillian-source/go-sofa-data-studio/internal/auth"
+	"github.com/vallewillian-source/sofa-lab/internal/auth"
 )
 
 func Login(serviceName string) error {
 
-	// open json file
+	// open api json file
 	jsonFile, err := os.Open("./jsons/services/" + serviceName + "/api.json")
 	if err != nil {
 		return err
