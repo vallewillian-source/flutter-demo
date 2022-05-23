@@ -23,21 +23,28 @@ type ScheemaFields struct {
 }
 
 //TODO implement array of scheemas
-func GenerateScheema(serviceName string, scheemaName string, value string) (Scheema, error) {
+func GenerateScheema(serviceName string, scheemaName string, value string, cache *map[string]Scheema) (Scheema, error) {
 
-	// open json file
-	// TODO implement cache
-	jsonFile, err := os.Open("./jsons/services/" + serviceName + "/scheemas/" + scheemaName + ".json")
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-	defer jsonFile.Close()
-
-	// convert to struct
+	// trying to get scheema from cache
 	var scheema Scheema
-	json.Unmarshal(byteValue, &scheema)
+	scheema, ok := (*cache)[scheemaName]
+	if !ok {
+		// not found on cache. getting from file..
+		jsonFile, err := os.Open("./jsons/services/" + serviceName + "/scheemas/" + scheemaName + ".json")
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		byteValue, _ := ioutil.ReadAll(jsonFile)
+		defer jsonFile.Close()
+
+		// convert to struct
+		json.Unmarshal(byteValue, &scheema)
+
+		// saving to cache
+		(*cache)[scheemaName] = scheema
+
+	}
 
 	// initializing scheema result
 	scheema.Result = make(map[string]interface{})
@@ -50,7 +57,7 @@ func GenerateScheema(serviceName string, scheemaName string, value string) (Sche
 			if len(field.Scheema) > 0 {
 				// insert scheema
 				var err error
-				scheema.Result[field.Name], err = GenerateScheema(serviceName, field.Scheema, fieldValue.String())
+				scheema.Result[field.Name], err = GenerateScheema(serviceName, field.Scheema, fieldValue.String(), cache)
 				if err != nil {
 					scheema.Result[field.Name] = "Err"
 				}

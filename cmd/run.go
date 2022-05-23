@@ -71,14 +71,16 @@ func Run(serviceName string, endpointName string) (map[string]interface{}, error
 
 func generateResult(serviceName string, response string, outParams *[]rest.OutParams) (map[string]interface{}, error) {
 	var result map[string]interface{} = make(map[string]interface{})
+	var cache map[string]scheema.Scheema = map[string]scheema.Scheema{}
 
 	for _, param := range *outParams {
 		value := gjson.Get(response, param.Address)
 		if json.Valid([]byte(value.String())) {
 			if len(param.Scheema) > 0 {
+
 				// print scheema
 				var err error
-				result[param.Name], err = scheema.GenerateScheema(serviceName, param.Scheema, value.String())
+				result[param.Name], err = scheema.GenerateScheema(serviceName, param.Scheema, value.String(), &cache)
 				if err != nil {
 					result[param.Name] = "Err"
 				}
