@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 
-	"github.com/vallewillian-source/go-sofa-data-studio/auth"
+	"github.com/vallewillian-source/go-sofa-data-studio/internal/auth"
 )
 
 func Execute() {
