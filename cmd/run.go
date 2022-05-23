@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -15,10 +14,23 @@ import (
 	"github.com/vallewillian-source/go-sofa-data-studio/internal/rest"
 )
 
-func Run(file string) error {
+func Run(serviceName string, endpointName string) error {
 
-	// open json file
-	jsonFile, err := os.Open("./jsons/" + file)
+	// open api json file
+	apiJsonFile, err := os.Open("./jsons/services/" + serviceName + "/auth.json")
+	if err != nil {
+		return err
+	}
+
+	apiByteValue, _ := ioutil.ReadAll(apiJsonFile)
+	defer apiJsonFile.Close()
+
+	// convert to struct
+	var api apiFile
+	json.Unmarshal(apiByteValue, &api)
+
+	// open endpoint json file
+	jsonFile, err := os.Open("./jsons/services/" + serviceName + "/endpoints/" + endpointName + ".json")
 	if err != nil {
 		return err
 	}
@@ -35,11 +47,9 @@ func Run(file string) error {
 	io.FetchParams(&inParameters)
 
 	// getting auth data
-	if endpoint.AuthType == "BEARER_TOKEN" {
-		auth.GetBearerAuth(endpoint.AuthService, &inParameters)
-	} else if endpoint.AuthType == "NONE" {
-	} else {
-		return errors.New("AUTH_TYPE_INVALID")
+	err = auth.FetchAuthParameters(endpoint.AuthService, api.AuthType, &inParameters)
+	if err != nil {
+		return err
 	}
 
 	// make a http request

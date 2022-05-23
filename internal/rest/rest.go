@@ -10,15 +10,6 @@ import (
 	"github.com/tidwall/sjson"
 )
 
-type InParams struct {
-	Address    string `json:"address"`
-	Name       string `json:"name"`
-	IsRequired bool   `json:"is_required"`
-	Result     string
-	Type       string `json:"type"`
-	Auth       string `json:"auth"`
-}
-
 type Endpoint struct {
 	Name        string      `json:"name"`
 	Url         string      `json:"url"`
@@ -27,6 +18,15 @@ type Endpoint struct {
 	AuthType    string      `json:"auth_type"`
 	InParams    []InParams  `json:"in_params"`
 	OutParams   []OutParams `json:"out_params"`
+}
+
+type InParams struct {
+	Address    string `json:"address"`
+	Name       string `json:"name"`
+	IsRequired bool   `json:"is_required"`
+	Result     string
+	Type       string `json:"type"`
+	Auth       string `json:"auth"`
 }
 
 type OutParams struct {
