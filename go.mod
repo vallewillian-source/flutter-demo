@@ -8,6 +8,8 @@ require (
 )
 
 require (
+	github.com/asticode/go-astikit v0.29.1 // indirect
+	github.com/asticode/go-astilectron v0.29.0 // indirect
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/manifoldco/promptui v0.9.0 // indirect
 	github.com/tidwall/gjson v1.14.1 // indirect
