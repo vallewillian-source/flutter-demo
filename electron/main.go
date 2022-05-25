@@ -12,8 +12,8 @@ func main() {
 	// Initialize astilectron
 	a, err := astilectron.New(log.New(os.Stderr, "", 0), astilectron.Options{
 		AppName:            "SofaLab",
-		AppIconDefaultPath: "resources/icon.png",  // If path is relative, it must be relative to the data directory
-		AppIconDarwinPath:  "resources/icon.icns", // Same here
+		AppIconDefaultPath: "resources/icon.png",
+		AppIconDarwinPath:  "resources/icon.icns",
 		BaseDirectoryPath:  "electron/",
 		VersionAstilectron: "0.33.0",
 		VersionElectron:    "13.0.0",
@@ -33,8 +33,8 @@ func main() {
 	// Create a new window
 	w, err := a.NewWindow("http://localhost:4200", &astilectron.WindowOptions{
 		Center: astikit.BoolPtr(true),
-		Height: astikit.IntPtr(600),
-		Width:  astikit.IntPtr(600),
+		Height: astikit.IntPtr(1024),
+		Width:  astikit.IntPtr(768),
 	})
 	if err != nil {
 		panic(err)
