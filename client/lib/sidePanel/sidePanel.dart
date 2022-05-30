@@ -1,6 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api, file_names, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:sofalab/sidePanel/actionTitle.dart';
+import 'package:sofalab/sidePanel/folderTitle.dart';
 import 'package:sofalab/sidePanel/title.dart';
 import 'package:sofalab/widgets/split.dart';
 import 'package:sofalab/widgets/tree-view/flutter_simple_treeview.dart';
@@ -50,35 +52,17 @@ class _SidePanelState extends State<SidePanel> {
                         TreeView(
                           nodes: [
                             TreeNode(
-                              content: const Text(
-                                "PinkApp",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 179, 179, 179),
-                                ),
-                              ),
+                              content:
+                                  const SidePanelFolderTitle(title: "PinkApp"),
                               children: [
                                 TreeNode(
-                                    content: const MouseRegion(
-                                        cursor: SystemMouseCursors.click,
-                                        child: Text(
-                                          "send a message",
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color.fromARGB(
-                                                  255, 179, 179, 179)),
-                                        ))),
+                                    content: const SidePanelActionTitle(
+                                  title: "send a message",
+                                )),
                                 TreeNode(
-                                    content: const MouseRegion(
-                                        cursor: SystemMouseCursors.click,
-                                        child: Text(
-                                          "create a channel",
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color.fromARGB(
-                                                  255, 179, 179, 179)),
-                                        )))
+                                    content: const SidePanelActionTitle(
+                                  title: "create a channel",
+                                ))
                               ],
                             ),
                           ],
