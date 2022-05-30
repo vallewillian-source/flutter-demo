@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
             color: const Color(0xff191818),
             child: Split(
                 axis: Axis.horizontal,
-                initialFirstFraction: 0.2,
+                initialFirstFraction: 0.3,
                 firstChild: Scrollbar(
                   controller: _sidePanelScrollController,
                   child: SingleChildScrollView(

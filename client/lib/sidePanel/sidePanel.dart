@@ -21,6 +21,19 @@ class _SidePanelState extends State<SidePanel> {
   final _endpointsScrollController = ScrollController();
   final _resultsScrollController = ScrollController();
 
+  final TextEditingController _textController = TextEditingController(text: '''
+{
+  "PinkApp": [
+    {
+      "title": "send a message"
+    },
+    {
+      "title": "create a channel"
+    }
+  ]
+}
+''');
+
   @override
   void initState() {
     super.initState();

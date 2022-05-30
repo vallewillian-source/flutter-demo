@@ -125,35 +125,46 @@ class _SplitState extends State<Split> {
       });
     }
 
+    MouseCursor cursor;
+    if (isHorizontal) {
+      cursor = SystemMouseCursors.resizeRight;
+    } else {
+      cursor = SystemMouseCursors.resizeDown;
+    }
+
     // TODO(https://github.com/flutter/flutter/issues/43747): use an icon.
     // The material icon for a drag handle is not currently available.
     // For now, draw an indicator that is 3 lines running in the direction
     // of the main axis, like a hamburger menu.
     // TODO(https://github.com/flutter/devtools/issues/1265): update mouse
     // to indicate that this is resizable.
-    final dragIndicator = Flex(
-      direction: isHorizontal ? Axis.vertical : Axis.horizontal,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (var i = 0; i < min(crossAxisSize / 6.0, 3).floor(); i++)
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: isHorizontal ? 2.0 : 0.0,
-              horizontal: isHorizontal ? 0.0 : 2.0,
-            ),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Theme.of(context).dividerColor,
-                borderRadius: BorderRadius.circular(Split.dividerMainAxisSize),
+    final dragIndicator = MouseRegion(
+        cursor: cursor,
+        child: Flex(
+          direction: isHorizontal ? Axis.vertical : Axis.horizontal,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (var i = 0; i < min(crossAxisSize / 6.0, 3).floor(); i++)
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: isHorizontal ? 2.0 : 0.0,
+                  horizontal: isHorizontal ? 0.0 : 2.0,
+                ),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).dividerColor,
+                    borderRadius:
+                        BorderRadius.circular(Split.dividerMainAxisSize),
+                  ),
+                  child: SizedBox(
+                    height:
+                        isHorizontal ? 2.0 : Split.dividerMainAxisSize - 2.0,
+                    width: isHorizontal ? Split.dividerMainAxisSize - 2.0 : 2.0,
+                  ),
+                ),
               ),
-              child: SizedBox(
-                height: isHorizontal ? 2.0 : Split.dividerMainAxisSize - 2.0,
-                width: isHorizontal ? Split.dividerMainAxisSize - 2.0 : 2.0,
-              ),
-            ),
-          ),
-      ],
-    );
+          ],
+        ));
 
     final children = [
       SizedBox(
